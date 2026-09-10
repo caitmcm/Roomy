@@ -13,8 +13,7 @@ public class GetBookingByRefEndpoint(IBookingRepository bookings)
         Summary(summary =>
         {
             summary.Summary = "Retrieve a booking by its reference.";
-            summary.Description =
-                "The reference issued when the booking was created is its only public identity.";
+            summary.Description = "Retrieve a booking by its reference.";
             summary.RequestParam(request => request.RefNumber, "The booking reference, for example BK-4F2A9C.");
             summary.Response<GetBookingByRefResponse>(200, "The booking.");
             summary.Response(404, "No booking exists with that reference.");
