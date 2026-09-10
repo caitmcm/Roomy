@@ -1,8 +1,15 @@
 # Roomy
 
+**Code**
+
 A hotel room booking API built with ASP.NET Core (.NET 10), FastEndpoints and EF Core on SQLite.
 
 🤖 - Claude Code was used in this project for its speed and design feedback. I have iterated and ensured quality.
+
+**CI/CD**
+
+GitHub Action created through Azure Web App Deployment Center to:
+roomy-api-c9a0a4hwf8cgh7ex.ukwest-01.azurewebsites.net
 
 ## Using the Swagger Page
 
