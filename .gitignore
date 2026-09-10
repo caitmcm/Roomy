@@ -361,3 +361,9 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+!Roomy.API/Endpoints/Debug/
+
+# Local SQLite database, recreated on startup
+roomy.db
+roomy.db-shm
+roomy.db-wal

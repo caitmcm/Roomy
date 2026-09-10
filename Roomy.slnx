@@ -1,4 +1,5 @@
 <Solution>
-  <Project Path="Roomy.API.Test/Roomy.API.Test.csproj" Id="977bd489-059e-4bbb-a01a-f98a55eff061" />
   <Project Path="Roomy.API/Roomy.API.csproj" />
+  <Project Path="Roomy.API.EndpointTests/Roomy.API.EndpointTests.csproj" />
+  <Project Path="Roomy.API.RepositoryTests/Roomy.API.RepositoryTests.csproj" />
 </Solution>

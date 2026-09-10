@@ -1,41 +1,48 @@
+using FastEndpoints;
+using FastEndpoints.Swagger;
+using Microsoft.EntityFrameworkCore;
+using Roomy.API.Data;
+using Roomy.API.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+var connectionString = builder.Configuration.GetConnectionString("Roomy")
+    ?? "Data Source=roomy.db";
+
+builder.Services.AddDbContext<RoomyDbContext>(options => options.UseSqlite(connectionString));
+
+builder.Services.AddSingleton(TimeProvider.System);
+
+builder.Services.AddScoped<IHotelRepository, HotelRepository>();
+builder.Services.AddScoped<IRoomRepository, RoomRepository>();
+builder.Services.AddScoped<IBookingRepository, BookingRepository>();
+
+builder.Services.AddFastEndpoints();
+builder.Services.SwaggerDocument(options =>
+{
+    options.DocumentSettings = settings =>
+    {
+        settings.Title = "Roomy API";
+        settings.Version = "v1";
+        settings.Description = "Hotel room booking API.";
+    };
+});
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+using (var scope = app.Services.CreateScope())
 {
-    app.MapOpenApi();
+    var database = scope.ServiceProvider.GetRequiredService<RoomyDbContext>();
+    database.Database.EnsureCreated();
 }
 
 app.UseHttpsRedirection();
+app.UseFastEndpoints();
+app.UseSwaggerGen();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
+app.MapGet("/", () => Results.Redirect("/swagger"))
+   .ExcludeFromDescription();
 
 app.Run();
 
-internal record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
+public partial class Program { }
