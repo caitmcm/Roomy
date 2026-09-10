@@ -17,13 +17,13 @@ https://roomy-api-c9a0a4hwf8cgh7ex.ukwest-01.azurewebsites.net/swagger/index.htm
 
 ### Seeding
 
-**Re-seed test data (if the database is blank)**
+**Reset and seed test data**
 
 ```
 POST /debug
 ```
 
-Teardown later.
+**Delete all data**
 
 ```
 DELETE /debug

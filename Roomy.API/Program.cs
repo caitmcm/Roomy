@@ -24,7 +24,7 @@ builder.Services.SwaggerDocument(options =>
     {
         settings.Title = "Roomy API";
         settings.Version = "v1";
-        settings.Description = "Hotel room booking API.";
+        settings.Description = "Hotel room booking API. Source: https://github.com/caitmcm/Roomy";
     };
 });
 
