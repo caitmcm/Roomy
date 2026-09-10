@@ -11,7 +11,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     permissions:
       contents: read #This is required for actions/checkout
 
@@ -27,7 +27,7 @@ jobs:
         run: dotnet build --configuration Release
 
       - name: dotnet publish
-        run: dotnet publish Roomy.API/Roomy.API.csproj -c Release -o ${{env.DOTNET_ROOT}}/myapp
+        run: dotnet publish -c Release -o "${{env.DOTNET_ROOT}}/myapp"
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
@@ -36,7 +36,7 @@ jobs:
           path: ${{env.DOTNET_ROOT}}/myapp
 
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     needs: build
     permissions:
       id-token: write #This is required for requesting the JWT
@@ -51,9 +51,9 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_0CC5093ED8F14C5194A965F589CA6D3B }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_C44021D0B73A46FBB142C4CBD05D14E0 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_D2F134DA638C43EEB8985340766DD82F }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_88967A0F8E2B4874B24CB474D54C3D24 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_E24EBCCA17794DC5BD9A33545C3BC121 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_064FFA755C8047979678573903F5A20C }}
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
