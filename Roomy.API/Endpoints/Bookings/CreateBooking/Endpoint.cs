@@ -4,7 +4,7 @@ using Roomy.API.Repositories;
 
 namespace Roomy.API.Endpoints.Bookings.CreateBooking;
 
-public class CreateBookingEndpoint(IRoomRepository rooms, IBookingRepository bookings)
+public class CreateBookingEndpoint(IHotelRepository hotels, IRoomRepository rooms, IBookingRepository bookings)
     : Endpoint<CreateBookingRequest, CreateBookingResponse>
 {
     public override void Configure()
@@ -17,18 +17,32 @@ public class CreateBookingEndpoint(IRoomRepository rooms, IBookingRepository boo
             summary.Description =
                 "Books requested room for the whole range and issues a booking reference.";
             summary.Response<CreateBookingResponse>(201, "The booking.");
-            summary.Response(404, "No hotel of that name, or no room of that number in it.");
+            summary.Response(400, "The request is invalid, names no hotel that exists, or names no room of that number in it.");
             summary.Response(409, "The room cannot hold that many guests, or is already booked for those dates.");
         });
     }
 
     public override async Task HandleAsync(CreateBookingRequest request, CancellationToken ct)
     {
+        if (!await hotels.ExistsAsync(request.HotelName, ct))
+        {
+            var message = $"No hotel named '{request.HotelName}' exists.";
+
+            AddError(request => request.HotelName, message);
+
+            await Send.ErrorsAsync(400, ct);
+            return;
+        }
+
         var room = await rooms.GetAsync(request.HotelName, request.RoomNumber, ct);
 
         if (room is null)
         {
-            await Send.NotFoundAsync(ct);
+            var message = $"'{request.HotelName}' has no room {request.RoomNumber}.";
+
+            AddError(request => request.RoomNumber, message);
+
+            await Send.ErrorsAsync(400, ct);
             return;
         }
 
