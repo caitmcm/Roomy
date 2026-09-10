@@ -2,9 +2,9 @@ using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
 using Roomy.API.Data;
 
-namespace Roomy.API.Endpoints.Debug.ResetData;
+namespace Roomy.API.Endpoints.Debug.DeleteData;
 
-public class ResetDataEndpoint(RoomyDbContext database) : EndpointWithoutRequest<ResetDataResponse>
+public class DeleteDataEndpoint(RoomyDbContext database) : EndpointWithoutRequest<DeleteDataResponse>
 {
     public override void Configure()
     {
@@ -12,11 +12,9 @@ public class ResetDataEndpoint(RoomyDbContext database) : EndpointWithoutRequest
         AllowAnonymous();
         Summary(summary =>
         {
-            summary.Summary = "Remove all data, ready for seeding.";
-            summary.Description =
-                "Deletes every booking, room and hotel. The three room types are reference data rather than "
-                + "test data and are left in place, since the API cannot function without them.";
-            summary.Response<ResetDataResponse>(200, "Counts of the records removed.");
+            summary.Summary = "Remove all data.";
+            summary.Description = "Removes all data.";
+            summary.Response<DeleteDataResponse>(200, "Counts of the records removed.");
         });
     }
 
@@ -27,7 +25,7 @@ public class ResetDataEndpoint(RoomyDbContext database) : EndpointWithoutRequest
         var hotels = await database.Hotels.ExecuteDeleteAsync(ct);
 
         await Send.OkAsync(
-            new ResetDataResponse
+            new DeleteDataResponse
             {
                 Hotels = hotels,
                 Rooms = rooms,

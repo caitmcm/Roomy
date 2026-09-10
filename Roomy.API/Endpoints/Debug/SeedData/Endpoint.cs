@@ -20,11 +20,7 @@ public class SeedDataEndpoint(RoomyDbContext database) : EndpointWithoutRequest<
         Summary(summary =>
         {
             summary.Summary = "Seed the database with test data.";
-            summary.Description =
-                "Removes all existing hotels, rooms and bookings, then inserts two hotels of six rooms each "
-                + "and a small set of future bookings. Includes a deliberate pair of adjacent bookings in one "
-                + "room, where the first booking's departure date is the second booking's arrival date, so the "
-                + "turnover case can be exercised without building it by hand.";
+            summary.Description = "Deletes all data and inserts test data into the SQL Lite database.";
             summary.Response<SeedDataResponse>(200, "Counts of the records inserted.");
         });
     }

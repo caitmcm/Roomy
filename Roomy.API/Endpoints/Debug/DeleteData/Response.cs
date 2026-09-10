@@ -1,6 +1,6 @@
-namespace Roomy.API.Endpoints.Debug.ResetData;
+namespace Roomy.API.Endpoints.Debug.DeleteData;
 
-public class ResetDataResponse
+public class DeleteDataResponse
 {
     public int Hotels { get; set; }
 
