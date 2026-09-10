@@ -1,3 +1,4 @@
 <Solution>
+  <Project Path="Roomy.API.Test/Roomy.API.Test.csproj" Id="977bd489-059e-4bbb-a01a-f98a55eff061" />
   <Project Path="Roomy.API/Roomy.API.csproj" />
 </Solution>
