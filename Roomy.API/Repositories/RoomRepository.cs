@@ -9,7 +9,7 @@ public class RoomRepository(RoomyDbContext database) : IRoomRepository
     public async Task<IReadOnlyList<Room>> FindAvailableAsync(string hotelName, DateOnly from, DateOnly to, int guests, CancellationToken ct)
     {
         var occupiedRoomIds = database.Bookings
-            .Overlapping(from, to)
+            .WithinDateRange(from, to)
             .Select(booking => booking.RoomId);
 
         var available = await WithRelations()

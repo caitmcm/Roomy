@@ -12,7 +12,7 @@ public class BookingRepository(RoomyDbContext database) : IBookingRepository
     public async Task<bool> IsRoomAvailableAsync(string hotelName, int roomNumber, DateOnly from, DateOnly to, CancellationToken ct) =>
         !await database.Bookings
             .Where(booking => booking.Room.Hotel.Name == hotelName && booking.Room.Number == roomNumber)
-            .Overlapping(from, to)
+            .WithinDateRange(from, to)
             .AnyAsync(ct);
 
     public async Task<Booking> CreateAsync(string hotelName, int roomNumber, DateOnly from, DateOnly to, int guests, string leadGuestName, CancellationToken ct)
